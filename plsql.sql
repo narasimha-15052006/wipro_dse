@@ -1,0 +1,38 @@
+
+
+SET SERVEROUTPUT ON;
+
+DECLARE
+    V_EMPNO EMP.EMPNO%TYPE := &EMPNO;
+    V_ENAME EMP.ENAME%TYPE := '&ENAME';
+    V_SAL EMP.SAL%TYPE := &SAL;
+    CNT NUMBER;
+BEGIN
+
+    SELECT COUNT(*)
+    INTO CNT
+    FROM EMP
+    WHERE EMPNO = V_EMPNO;
+
+    IF CNT = 0 THEN
+
+        INSERT INTO EMP(EMPNO,ENAME,SAL)
+        VALUES(V_EMPNO,V_ENAME,V_SAL);
+
+        DBMS_OUTPUT.PUT_LINE('Employee Inserted');
+
+    ELSE
+
+        UPDATE EMP
+        SET ENAME = V_ENAME,
+            SAL = V_SAL
+        WHERE EMPNO = V_EMPNO;
+
+        DBMS_OUTPUT.PUT_LINE('Employee Updated');
+
+    END IF;
+
+    COMMIT;
+
+END;
+/
